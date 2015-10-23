@@ -1,6 +1,7 @@
 .applist
 .eunit
 sample
+!sample/
 deps
 *.o
 *.beam
