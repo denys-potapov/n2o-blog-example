@@ -22,10 +22,21 @@
 	</style>
   </head>
   <body>
-  	<div class="container">
+    <div class="container">
   	  {% block content %}{% endblock %}
-  	</div>
+    </div>
    
+    <script>{{script}}</script>
+    <script src='/n2o/protocols/bert.js'></script>
+    <script src='/n2o/protocols/client.js'></script>
+    <script src='/n2o/protocols/nitrogen.js'></script>
+    <script src='/n2o/validation.js'></script>
+    <script src='/n2o/bullet.js'></script>
+    <script src='/n2o/utf8.js'></script>
+    <script src='/n2o/template.js'></script>
+    <script src='/n2o/n2o.js'></script>
+    <script>protos = [ $bert, $client ]; N2O_start();</script>
+
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
   </body>
