@@ -10,4 +10,21 @@ posts() -> [
         #p{body = P#post.text}
       ]} || P <- posts:get()].
 
-main() -> #dtl{file="index", bindings=[{posts, posts()}]}.
+buttons() ->
+	case wf:user() of
+		undefined -> #li{body=#link{body = "Login", url="/login"}};
+		_ -> [
+				#p{class=["navbar-text"], body="Hello, " ++ wf:user()},
+				#li{body=#link{body = "New post", url="/new"}},
+				#li{body=#link{body = "Logout", postback=logout}}
+		] end.
+
+header() -> 
+	#ul{id=header, class=["nav", "navbar-nav", "navbar-right"], body = buttons()}.
+		
+
+main() -> #dtl{file="index", bindings=[{posts, posts()}, {header, header()}]}.
+
+event(logout) ->
+	wf:user(undefined),
+	wf:update(header, header()).

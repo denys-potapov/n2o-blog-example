@@ -10,6 +10,6 @@ main() ->
 
 api_event(login, Response, Term) ->
 	{Props} = jsone:decode(list_to_binary(Response)),
-	User = proplists:get_value(<<"name">>, Props),
+	User = binary_to_list(proplists:get_value(<<"name">>, Props)),
 	wf:user(User),
 	wf:redirect("/").
