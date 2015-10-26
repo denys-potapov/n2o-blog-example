@@ -17,6 +17,7 @@ route(<<>>)                 -> index;
 route(<<"index">>)          -> index;
 route(<<"favicon.ico">>)    -> index;
 route(<<"post">>)           -> post;
+route(<<"login">>)           -> login;
 route(_)                    -> index.
 
 

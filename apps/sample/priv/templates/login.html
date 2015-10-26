@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block title %}Login{% endblock %}
+{% block content %}
+
+<h1>Login</h1>
+<p id="status"></p>
+<button id="login" class="btn btn-primary" onclick="onLoginClick();">
+	Login with facebook
+</button>
+
+<script>
+ 
+  // This is called with the results from from FB.getLoginStatus().
+  function statusChangeCallback(response) {
+    console.log('statusChangeCallback');
+    if (response.status === 'connected') {
+      // Logged into your app and Facebook.
+      FB.api('/me', function(response) {
+        login(response);
+      });
+    } else if (response.status === 'not_authorized') {
+      document.getElementById('status').innerHTML = 'Please log ' +
+        'into this app.';
+    } else {
+      document.getElementById('status').innerHTML = 'Please log ' +
+        'into Facebook.';
+    }
+  }
+
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '{{ app_id }}',
+      cookie     : true,
+      version    : 'v2.2' // use version 2.2
+    });
+    FB.getLoginStatus(function(response) {
+      statusChangeCallback(response);
+    });
+  };
+
+  // Load the SDK asynchronously
+  (function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/en_US/sdk.js";
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));
+
+  function onLoginClick() {
+    FB.login(function(response) {
+      statusChangeCallback(response);
+    }, {scope: 'public_profile,email'});
+  };
+</script>
+{% endblock %}
