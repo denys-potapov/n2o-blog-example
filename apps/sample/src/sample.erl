@@ -3,13 +3,25 @@
 -behaviour(application).
 -export([init/1, start/2, stop/1, main/1]).
 -compile(export_all).
+-include_lib("kvs/include/metainfo.hrl").
+-include_lib("kvs/include/kvs.hrl").
+-include_lib("records.hrl").
+
+metainfo() -> 
+    #schema{name=sample,tables=[
+        #table{name=id_seq,fields=record_info(fields,id_seq),keys=[thing]},
+        #table{name=post,fields=record_info(fields,post)}
+    ]}.
 
 main(A)    -> mad_repl:sh(A).
 start(_,_) -> supervisor:start_link({local,sample},sample,[]).
 stop(_)    -> ok.
-init([])   -> case cowboy:start_http(http,3,port(),env()) of
-                   {ok, _}   -> ok;
-                   {error,_} -> halt(abort,[]) end, sup().
+
+init([])   -> 
+	case cowboy:start_http(http,3,port(),env()) of
+        {ok, _}   -> ok;
+        {error,_} -> halt(abort,[]) end, sup(),
+    kvs:join().
 
 sup()    -> { ok, { { one_for_one, 5, 100 }, [] } }.
 env()    -> [ { env, [ { dispatch, points() } ] } ].

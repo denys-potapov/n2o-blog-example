@@ -6,9 +6,9 @@
 
 posts() -> [
 	#panel{body=[
-        #h2{body = #link{body = P#post.title, url = "/post?id=" ++ wf:to_list(P#post.id)}},
-        #p{body = P#post.text}
-      ]} || P <- posts:get()].
+        #h2{body = #link{body = wf:html_encode(P#post.title), url = "/post?id=" ++ wf:to_list(P#post.id)}},
+        #p{body = wf:html_encode(P#post.text)}
+      ]} || P <- kvs:all(post)].
 
 buttons() ->
 	case wf:user() of

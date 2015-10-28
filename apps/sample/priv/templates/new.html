@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}New Post{% endblock %}
+{% block content %}
+<h1>Add new post</h1>
+<h3>Title</h3>
+<input id="title" class="form-control">
+<h3>Body</h3>
+<textarea id="text" maxlength="1000" class="form-control" rows=10>
+	
+</textarea>
+
+{{ button }}
+{% endblock %}

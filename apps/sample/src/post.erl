@@ -4,11 +4,16 @@
 -include_lib("nitro/include/nitro.hrl").
 -include_lib("records.hrl").
 
-post_id() -> wf:q(<<"id">>).
+post_id() -> wf:to_integer(wf:q(<<"id">>)).
 
 main() -> 
-	Post = posts:get(wf:to_integer(post_id())),
-	#dtl{file="post", bindings=[{title, Post#post.title}, {text, Post#post.text}, {comments, comments()}]}.
+	case kvs:get(post, post_id()) of
+		{ok, Post} -> #dtl{file="post", bindings=[
+			{title, wf:html_encode(Post#post.title)}, 
+			{text, wf:html_encode(Post#post.text)},
+			{author, wf:html_encode(Post#post.author)},
+			{comments, comments()}]};
+		_ -> wf:state(status,404), "Post not found" end.
 
 comments() ->
 	[#textarea{id=comment, class=["form-control"], rows=3},

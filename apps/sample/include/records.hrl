@@ -1,1 +1,1 @@
--record(post, {id, title, text}).
+-record(post, {id, title, text, author}).
