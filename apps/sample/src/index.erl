@@ -21,7 +21,6 @@ buttons() ->
 
 header() -> 
 	#ul{id=header, class=["nav", "navbar-nav", "navbar-right"], body = buttons()}.
-		
 
 main() -> #dtl{file="index", bindings=[{posts, posts()}, {header, header()}]}.
 

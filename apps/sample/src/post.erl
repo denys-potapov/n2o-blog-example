@@ -16,14 +16,25 @@ main() ->
 		_ -> wf:state(status,404), "Post not found" end.
 
 comments() ->
-	[#textarea{id=comment, class=["form-control"], rows=3},
-      #button{id=send, class=["btn", "btn-default"], body="Post comment",postback=comment,source=[comment]} ].
-
+	case wf:user() of
+		undefined -> #link{body = "Login to add comment", url="/login"};
+		_ -> [
+				#textarea{id=comment, class=["form-control"], rows=3},
+      			#button{id=send, class=["btn", "btn-default"], body="Post comment",postback=comment,source=[comment]} 
+		] end.
+	
 event(init) ->
+	[event({client,Comment}) || Comment <- kvs:entries(kvs:get(post, post_id()),comment,undefined) ],
 	wf:reg({post, post_id()});
 
-event(comment) -> 
-	wf:send({post, post_id()}, {client, wf:q(comment)});
+event(comment) ->
+	Comment = #comment{id=kvs:next_id("comment",1),author=wf:user(),feed_id=post_id(),text=wf:q(comment)},
+	kvs:add(Comment),
+	wf:send({post, post_id()}, {client, Comment});
 
-event({client, Text}) ->
-	wf:insert_bottom(comments, #blockquote{body = #p{body = wf:html_encode(wf:jse(Text))}}).
+event({client, Comment}) ->
+	wf:insert_bottom(comments,
+		#blockquote{body = [
+			#p{body = wf:html_encode(Comment#comment.text)},
+			#footer{body = wf:html_encode(Comment#comment.author)}
+		]}).
