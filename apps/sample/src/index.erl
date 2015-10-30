@@ -26,4 +26,6 @@ main() -> #dtl{file="index", bindings=[{posts, posts()}, {header, header()}]}.
 
 event(logout) ->
 	wf:user(undefined),
-	wf:update(header, header()).
+	wf:update(header, header());
+
+event(_) -> ok.
