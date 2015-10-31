@@ -1,4 +1,5 @@
 -include_lib("kvs/include/kvs.hrl").
 
--record(post, {?CONTAINER, title, text, author}).
--record(comment, {?ITERATOR(post), text, author}).
+-record(feed, {?CONTAINER}).
+-record(post, {?ITERATOR(feed), title, text, author}).
+-record(comment, {?ITERATOR(feed), text, author}).

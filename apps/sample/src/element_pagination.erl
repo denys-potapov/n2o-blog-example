@@ -3,7 +3,6 @@
 -include_lib("nitro/include/nitro.hrl").
 -include_lib("elements.hrl").
 
-
 link(Class, Body, Url) -> #li{class=[Class], body=#link{body=Body, url=Url}}.
 disabled(Body) -> link("disabled", Body, "#").
 

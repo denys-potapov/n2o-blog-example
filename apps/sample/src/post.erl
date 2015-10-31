@@ -24,11 +24,11 @@ comments() ->
 		] end.
 	
 event(init) ->
-	[event({client,Comment}) || Comment <- kvs:entries(kvs:get(post, post_id()),comment,undefined) ],
-	wf:reg({post, post_id()});
+	wf:reg({post, post_id()}),
+	[event({client,Comment}) || Comment <- kvs:entries(kvs:get(feed, {post, post_id()}),comment,undefined) ];
 
 event(comment) ->
-	Comment = #comment{id=kvs:next_id("comment",1),author=wf:user(),feed_id=post_id(),text=wf:q(comment)},
+	Comment = #comment{id=kvs:next_id("comment",1),author=wf:user(),feed_id={post, post_id()},text=wf:q(comment)},
 	kvs:add(Comment),
 	wf:send({post, post_id()}, {client, Comment});
 

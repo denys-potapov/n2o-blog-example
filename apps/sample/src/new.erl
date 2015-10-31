@@ -11,7 +11,7 @@ main() ->
 
 event(post) -> 
 	Id = kvs:next_id("post",1),
-	Post = #post{id=Id,author=wf:user(),title=wf:q(title),text=wf:q(text)},
-	kvs:put(Post),
+	Post = #post{id=Id,author=wf:user(),feed_id=main, title=wf:q(title),text=wf:q(text)},
+	kvs:add(Post),
 	wf:redirect("/post?id=" ++ wf:to_list(Id)).
 

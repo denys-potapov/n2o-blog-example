@@ -10,10 +10,10 @@
 metainfo() -> 
     #schema{name=sample,tables=[
         #table{name=id_seq,fields=record_info(fields,id_seq),keys=[thing]},
-        #table{name=post,container=true,fields=record_info(fields,post)},
-        #table{name=comment,container=post,fields=record_info(fields,comment)}
+        #table{name=feed,container=true,fields=record_info(fields,feed)},
+        #table{name=post,container=feed,fields=record_info(fields,post)},
+        #table{name=comment,container=feed,fields=record_info(fields,comment)}
     ]}.
-
 
 main(A)    -> mad_repl:sh(A).
 start(_,_) -> supervisor:start_link({local,sample},sample,[]).
